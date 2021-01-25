@@ -12,6 +12,7 @@ flask-heroku = "*"
 gunicorn = "*"
 marshmallow-sqlalchemy = "*"
 psycopg2 = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
