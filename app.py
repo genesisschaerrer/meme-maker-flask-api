@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_marshmallow import Marshmallow 
 from flask_heroku import Heroku 
 from settings import DATABASE_URL
-from flask_migrate import Migrate,
+from flask_migrate import Migrate
 # from flask_script import Manager
 import os
 
