@@ -6,14 +6,17 @@ from flask_heroku import Heroku
 from settings import DATABASE_URL
 from flask_migrate import Migrate
 # from flask_script import Manager
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
 
 app = Flask(__name__)
 heroku = Heroku(app)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+FLASK_APP = os.getenv("FLASK_APP")
 # app.config["DEBUG"] = True
 
 
