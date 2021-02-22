@@ -4,9 +4,7 @@ from flask_cors import CORS
 from flask_marshmallow import Marshmallow 
 from flask_heroku import Heroku 
 from settings import DATABASE_URL
-from flask_migrate import Migrate
 import os
-
 
 app = Flask(__name__)
 heroku = Heroku(app)
@@ -14,30 +12,26 @@ heroku = Heroku(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 
-
 CORS(app)
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
-migrate = Migrate(app, db)
 
 class Meme(db.Model):
     __tablename__ = "memes"
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(50))
-    bottom_text = db.Column(db.String(50))
     image = db.Column(db.String(500))
     favorite = db.Column(db.Boolean)
 
-    def __init__(self, text, bottom_text, image, favorite):
+    def __init__(self, text, image, favorite):
         self.text = text
-        self.bottom_text = bottom_text
         self.image = image
         self.favorite = favorite
 
 class MemeSchema(ma.Schema): 
     class Meta: 
-        fields = ("id", "text", "bottom_text" "image", "favorite")
+        fields = ("id", "text", "image", "favorite")
 
 
 meme_schema = MemeSchema()
@@ -50,11 +44,10 @@ def greeting():
 @app.route("/add-meme", methods=["POST"])
 def add_meme():
     text = request.json["text"]
-    bottom_text = request.json["bottom_text"]
     image = request.json["image"]
     favorite = request.json["favorite"]
 
-    new_meme = Meme(text, bottom_text, image, favorite)
+    new_meme = Meme(text, image, favorite)
 
     db.session.add(new_meme)
     db.session.commit()
@@ -83,12 +76,10 @@ def update_meme(id):
     meme = Meme.query.get(id)
 
     new_text = request.json["text"]
-    new_bottom_text = request.json["bottom_text"]
     new_favorite = request.json["favorite"]
 
 
     meme.text = new_text
-    meme.bottom_text = new_bottom_text
     meme.favorite = new_favorite
 
     db.session.commit()
