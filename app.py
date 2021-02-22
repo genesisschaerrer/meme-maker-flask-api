@@ -4,18 +4,37 @@ from flask_cors import CORS
 from flask_marshmallow import Marshmallow 
 from flask_heroku import Heroku 
 from settings import DATABASE_URL
+<<<<<<< HEAD
 import os
 
+=======
+from flask_migrate import Migrate
+# from flask_script import Manager
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+>>>>>>> c948b00c520d06f3c43994616e696d2e88a7dc41
 app = Flask(__name__)
 heroku = Heroku(app)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+FLASK_APP = os.getenv("FLASK_APP")
+# app.config["DEBUG"] = True
 
 CORS(app)
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+<<<<<<< HEAD
+=======
+migrate = Migrate(app, db)
+# manager = Manager(app)
+
+# manager.add_command("db", MigrateCommand)
+>>>>>>> c948b00c520d06f3c43994616e696d2e88a7dc41
 
 class Meme(db.Model):
     __tablename__ = "memes"
@@ -35,7 +54,7 @@ class MemeSchema(ma.Schema):
 
 
 meme_schema = MemeSchema()
-memes_schema = MemeSchema(many=True)
+memes_schema = MemeSchema(many=True) 
 
 @app.route("/")
 def greeting():
@@ -97,4 +116,5 @@ def delete_meme(id):
 
 
 if __name__ == "__main__":
+    # manager.run()
     app.run(debug=True)

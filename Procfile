@@ -1,1 +1,1 @@
-web: gunicorn app:app
+FLASK_APP=app.py
